@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "connections_sql_name": {
+            "value": "sql-1"
+        },
+        "password": {
+            "value": "L15169037873q"
+        },
+		"logicAppSystemAssignedIdentityObjectId":{
+			"Value":"a16b240f-14c7-4f6a-87bb-93d4d1a924b3",
+		},
+		"logicAppSystemAssignedIdentityTenantId":{
+			"Value":"72f988bf-86f1-41af-91ab-2d7cd011db47",
+		}
+    }
+}

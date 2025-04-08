@@ -1,0 +1,75 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"connections_sql_name": {
+			"defaultValue": "null",
+			"type": "String"
+		},
+		"password": {
+			"type": "String"
+			
+		},
+		"logicAppSystemAssignedIdentityObjectId":{
+			"defaultValue":"null",
+			"type":"String"
+	
+		},
+		"logicAppSystemAssignedIdentityTenantId":{
+			"defaultValue":"null",
+			"type":"String"
+		}
+		
+	},
+	"variables": {},
+	"resources": [
+		{
+			"properties": {
+				"api": {
+					"id": "/subscriptions/a781a931-d3dc-4bd0-8f43-05528dd0b6fb/providers/Microsoft.Web/locations/eastus/managedApis/sql"
+				},
+				"parameterValueSet": {
+					"name": "sqlAuthentication",
+					"values": {
+						"server": {
+							"value": "serena0227sqloauth.database.windows.net"
+						},
+						"database": {
+							"value": "keyvaulttest"
+						},
+						"username": {
+							"value": "serenaliqing"
+						},
+						"password": {
+							"value": "[parameters('password')]"
+						}
+					}
+				},
+				"displayName": "testdevops"
+			},
+			"kind": "V2",
+			"location": "eastus",
+			"type": "Microsoft.Web/connections",
+			"apiVersion": "2016-06-01",
+			"name": "[parameters('connections_sql_name')]"
+		},
+		{
+			"name": "[concat(parameters('connections_sql_name'),'/',parameters('logicAppSystemAssignedIdentityObjectId'))]",
+			"type": "Microsoft.Web/connections/accessPolicy",
+			"apiVersion": "2016-06-01",
+			"location": "eastus",
+			"dependsOn": [
+                "[resourceId('Microsoft.Web/connections', parameters('connections_sql_name'))]"
+            ],
+			"properties": {
+				"principal": {
+					"type": "ActiveDirectory",
+					"identity": {
+						"objectId": "[parameters('logicAppSystemAssignedIdentityObjectId')]",
+						"tenantId": "[parameters('logicAppSystemAssignedIdentityTenantId')]"
+					}
+				}
+			}
+		}
+	]
+}

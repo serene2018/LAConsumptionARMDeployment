@@ -1,0 +1,27 @@
+{
+	"managedApiConnections": {
+		"sql_2": {
+			"api": {
+				"id": "/subscriptions/a781a931-d3dc-4bd0-8f43-05528dd0b6fb/providers/Microsoft.Web/locations/eastus/managedApis/sql"
+			},
+			"connection": {
+				"id": "/subscriptions/a781a931-d3dc-4bd0-8f43-05528dd0b6fb/resourceGroups/Serena-DevOps-logicappV2-deployment/providers/Microsoft.Web/connections/sql-1"
+			},
+			"connectionRuntimeUrl": "https://5747f0306c17c3b9.02.common.logic-eastus.azure-apihub.net/apim/sql/6cf1df162bb7462c8adde5638cbbc649",
+			"authentication": {
+				"type": "ManagedServiceIdentity"
+			}
+		}
+	},
+	"serviceProviderConnections": {
+		"AzureBlob": {
+			"displayName": "test0621",
+			"parameterValues": {
+				"connectionString": "DefaultEndpointsProtocol=https;AccountName=test0621apiconnection;AccountKey=yKP4HWhnSgsu3NKvHxgoKnS1pjUmca4I7QhSOU2md14h6UXzizGmLFYwVt3nfEcqH/P0VDGY8WNY+AStMIgcqw==;EndpointSuffix=core.windows.net"
+			},
+			"serviceProvider": {
+				"id": "/serviceProviders/AzureBlob"
+			}
+		}
+	}
+}

@@ -1,0 +1,52 @@
+trigger: none
+
+pr: none
+
+stages:
+
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+      variables: 
+        ErrorText: ''
+    steps:
+      - task: CopyFiles@2
+        displayName: 'Create project folder'
+        inputs:
+          SourceFolder: '$(System.DefaultWorkingDirectory)/20220630-DevOps-Pipeline-Test/devops_sql_apiconnection'
+          Contents: |
+              *.json
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish project artifact'
+        inputs:
+          targetPath:: '$(Build.ArtifactStagingDirectory)'
+          artifact: 'create_connection'
+          publishLocation: 'pipeline'
+
+- stage: Deploy
+  displayName: 'Deployment'
+  jobs:
+  - job: deploy_logicapp_connections
+    displayName: Deploy Connection
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifact: 'create_connection'
+        path: '$(Build.ArtifactStagingDirectory)'
+
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy Connection'
+      inputs:
+        azureSubscription: 'serena'
+        ConnectedServiceName: 'serena'
+        resourceGroupName: 'Serena-DevOps-logicappV2-deployment'
+        location: 'eastus'
+        csmFile: '$(Build.ArtifactStagingDirectory)/a/template.json'
+        csmParametersFile: '$(Build.ArtifactStagingDirectory)/a/template.parameters.json'
+        deploymentMode: 'Incremental'
